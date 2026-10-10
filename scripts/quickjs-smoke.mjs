@@ -44,24 +44,39 @@ const checks = [
         name: "默认参数",
         args: {},
         verify(out) {
-            assert(Array.isArray(out["proxy-groups"]) && out["proxy-groups"].length > 0, "proxy-groups 为空");
+            assert(
+                Array.isArray(out["proxy-groups"]) && out["proxy-groups"].length > 0,
+                "proxy-groups 为空"
+            );
             assert(Array.isArray(out.rules) && out.rules.length > 0, "rules 为空");
-            assert(out["rule-providers"] && typeof out["rule-providers"] === "object", "缺少 rule-providers");
+            assert(
+                out["rule-providers"] && typeof out["rule-providers"] === "object",
+                "缺少 rule-providers"
+            );
             assert(out["rule-providers"].Muse, "缺少 Muse provider");
-            assert(out.rules.some((r) => r.startsWith("RULE-SET,Muse,")), "rules 缺少 RULE-SET,Muse");
+            assert(
+                out.rules.some((r) => r.startsWith("RULE-SET,Muse,")),
+                "rules 缺少 RULE-SET,Muse"
+            );
             assert(
                 out["proxy-groups"].some((g) => g.name === "AI服务"),
                 "缺少 AI服务 策略组"
             );
             assert(out.dns && out.dns.enable, "dns 配置异常");
-            assert(out["proxy-groups"].some((g) => g.name === "Tailscale"), "Tailscale 节点未生成对应策略组");
+            assert(
+                out["proxy-groups"].some((g) => g.name === "Tailscale"),
+                "Tailscale 节点未生成对应策略组"
+            );
         },
     },
     {
         name: "全开参数(grouptype=1,ipv6,tun,regex)",
         args: { grouptype: "1", ipv6: "true", tun: "true", regex: "true", fakeip: "true" },
         verify(out) {
-            assert(Array.isArray(out["proxy-groups"]) && out["proxy-groups"].length > 0, "proxy-groups 为空");
+            assert(
+                Array.isArray(out["proxy-groups"]) && out["proxy-groups"].length > 0,
+                "proxy-groups 为空"
+            );
             assert(out.tun && out.tun.enable === true, "tun 未启用");
             assert(out.dns && out.dns["enhanced-mode"] === "fake-ip", "fake-ip 模式未生效");
         },
