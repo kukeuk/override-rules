@@ -18,7 +18,8 @@
     "preversion": "npm run lint && npm run typecheck",
     "version": "node scripts/changelog.mjs && git add CHANGELOG.md",
     "postversion": "git push --follow-tags",
-    "test:quickjs": "node scripts/quickjs-smoke.mjs"
+    "test:quickjs": "node scripts/quickjs-smoke.mjs",
+    "clients": "node scripts/generate-clients.mjs"
   },
   "dependencies": {
     "yaml": "^2.9.0"

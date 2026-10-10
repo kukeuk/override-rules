@@ -2,3 +2,6 @@
 # 上游：ruleset/Muse.list
 # Muse (Meta AI Agent) - explicit routing independent of GeoSite DB version
 host-suffix, muse.ai
+host-suffix, meta.ai
+host-suffix, metaaivm.com
+host-suffix, ai.meta.com

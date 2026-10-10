@@ -24,7 +24,38 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const RULESET_DIR = join(ROOT, "ruleset");
 const CLIENTS_DIR = join(ROOT, "clients");
 const CDN = "https://cdn.jsdelivr.net/gh/kukeuk/override-rules@master";
+const RAW = "https://raw.githubusercontent.com/kukeuk/override-rules/master";
 const BM = "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule";
+const ICON_CDN = "https://cdn.jsdelivr.net";
+
+// ---- 从 src/constants.ts 解析国家/地区元数据（名称、正则、图标、权重） ----
+function parseCountries() {
+    const src = readFileSync(join(ROOT, "src/constants.ts"), "utf8");
+    const start = src.indexOf("export const countriesMeta");
+    const end = src.indexOf("\n};", start);
+    const block = src.slice(start, end);
+    const parts = block.split(/^    (\S+): \{$/m);
+    const list = [];
+    for (let i = 1; i + 1 < parts.length; i += 2) {
+        const name = parts[i];
+        const body = parts[i + 1];
+        const patM = body.match(/pattern:\s*\n?\s*"((?:[^"\\]|\\.)*)"/);
+        if (!patM) continue;
+        const iconM = body.match(/icon:\s*`([^`]+)`/);
+        const weightM = body.match(/weight:\s*(\d+)/);
+        list.push({
+            name,
+            group: `${name}节点`,
+            filter: `Sub-${name}`,
+            pattern: patM[1].replace(/\\\\/g, "\\"),
+            icon: iconM ? iconM[1].replace("${CDN_URL}", ICON_CDN) : "",
+            weight: weightM ? parseInt(weightM[1], 10) : 999,
+        });
+    }
+    list.sort((a, b) => a.weight - b.weight);
+    return list;
+}
+const COUNTRIES = parseCountries();
 const OFFLINE = process.argv.includes("--offline");
 const SPEEDTEST_URL = "http://www.gstatic.com/generate_204";
 
@@ -518,26 +549,51 @@ const GROUP_MEMBERS = {
 
 // ---------------------------------------------------------------- 生成配置
 
-function buildLoonConf() {
+function buildLoonConf(raw = false) {
     const L = [];
     L.push(GEN_HEADER);
-    L.push(`# 对应 mihomo 分流（convert.min.js）的 Loon 版`);
-    L.push(`# 使用：1) 导入本文件到 Loon；2) 添加你的节点订阅；`);
-    L.push(`# 3) 把节点名字填进「${G.SELECT}」策略组（只需改这一个地方）；4) 其它组已自动跟随`);
+    L.push(
+        `# 对应 mihomo 分流（convert.min.js）的 Loon 版${raw ? "（raw 直链版，实时最新）" : ""}`
+    );
+    L.push(`# 使用：1) 导入本文件到 Loon；`);
+    L.push(`# 2) 到下面的 [Remote Proxy] 把你的节点订阅链接填进去（去掉行首的 #）；`);
+    L.push(`# 3) 地区组（美国节点/新加坡节点…）会自动按正则筛选订阅里的节点，无需手动填；`);
+    L.push(`# 4) 其它服务组已自动跟随「${G.SELECT}」`);
+    const base = raw ? RAW : CDN;
     L.push(``);
     L.push(`[General]`);
-    L.push(`bypass-system = true`);
+    L.push(`dns-server = system`);
+    L.push(`proxy-test-url = ${SPEEDTEST_URL}`);
+    L.push(`internet-test-url = ${SPEEDTEST_URL}`);
     L.push(`skip-proxy = 192.168.0.0/16, 10.0.0.0/8, 172.16.0.0/12, localhost, *.local`);
     L.push(``);
+    L.push(`[Remote Proxy]`);
+    L.push(`# ↓↓↓ ② 把你的节点订阅链接填在这里（去掉行首的 #，只留一行） ↓↓↓`);
+    L.push(`# 节点订阅 = https://你的机场订阅链接`);
+    L.push(``);
+    L.push(`[Remote Filter]`);
+    L.push(`# 按地区自动筛选订阅节点（NameRegex 正则匹配节点名，与 mihomo 版同一套正则）`);
+    for (const c of COUNTRIES) {
+        // Loon 用逗号分隔参数，正则里的 {2,} 改写成无逗号的等价形式
+        const loonPattern = c.pattern.replace(/\[A-Za-z\]\{2,\}/g, "[A-Za-z][A-Za-z]+");
+        L.push(`${c.filter} = NameRegex, ${loonPattern}`);
+    }
+    L.push(``);
     L.push(`[Proxy Group]`);
+    // 地区组：url-test 自动按正则筛选
+    for (const c of COUNTRIES) {
+        const img = c.icon ? `, img-url=${c.icon}` : ``;
+        L.push(`${c.group} = url-test, ${c.filter}, url=${SPEEDTEST_URL}, interval=300${img}`);
+    }
+    const countryGroups = COUNTRIES.map((c) => c.group).join(", ");
     for (const [name, type] of GROUPS) {
         if (name === G.SELECT) {
-            L.push(`# ↓↓↓ 把你的节点名字填在这里，多个用逗号分隔 ↓↓↓`);
-            L.push(`${name} = ${type}, img-url=${ICONS[name]}`);
+            L.push(`${name} = ${type}, ${G.DIRECT}, ${countryGroups}, img-url=${ICONS[name]}`);
             continue;
         }
         const members = GROUP_MEMBERS[name];
         if (type === "url-test" || type === "fallback") {
+            // 注：这里嵌套引用「选择代理」组；若 Loon 报错，把地区组名字直接填进来代替
             L.push(
                 `${name} = ${type}, ${members.join(", ")}, url=${SPEEDTEST_URL}, interval=300, img-url=${ICONS[name]}`
             );
@@ -549,7 +605,8 @@ function buildLoonConf() {
     L.push(`[Remote Rule]`);
     for (const r of REMOTES) {
         if (!r.loon) continue;
-        L.push(`${r.loon}, policy=${r.policy}, tag=${r.tag}, enabled=true`);
+        const url = raw ? r.loon.replace(CDN, RAW) : r.loon;
+        L.push(`${url}, policy=${r.policy}, tag=${r.tag}, enabled=true`);
     }
     L.push(``);
     L.push(`[Rule]`);
@@ -565,18 +622,39 @@ function buildLoonConf() {
     return L.join("\n");
 }
 
-function buildQxConf() {
+function buildQxConf(raw = false) {
     const L = [];
     L.push(GEN_HEADER);
-    L.push(`# 对应 mihomo 分流（convert.min.js）的 Quantumult X 版`);
-    L.push(`# 使用：1) 导入本文件到圈X；2) 添加你的节点订阅（[server_remote]）；`);
-    L.push(`# 3) 把节点名字填进「${G.SELECT}」策略（只需改这一个地方）；4) 其它策略已自动跟随`);
+    L.push(
+        `# 对应 mihomo 分流（convert.min.js）的 Quantumult X 版${raw ? "（raw 直链版，实时最新）" : ""}`
+    );
+    L.push(`# 使用：1) 导入本文件到圈X；2) 在下面的 [server_remote] 填你的节点订阅链接；`);
+    L.push(`# 3) 地区组（美国节点/新加坡节点…）会自动按正则筛选订阅里的节点，无需手动填；`);
+    L.push(`# 4) 其它策略已自动跟随「${G.SELECT}」`);
+    L.push(``);
+    L.push(`[general]`);
+    L.push(`# 节点延迟测试地址（url-latency-benchmark 策略用它测速）`);
+    L.push(`server_check_url=${SPEEDTEST_URL}`);
+    L.push(``);
+    L.push(`[server_remote]`);
+    L.push(`# ↓↓↓ 把你的节点订阅链接填在这里（去掉行首的 #） ↓↓↓`);
+    L.push(`# https://你的机场订阅链接, tag=节点订阅, enabled=true`);
     L.push(``);
     L.push(`[policy]`);
+    // 地区策略：url-latency-benchmark + server-tag-regex 按正则自动筛选订阅节点
+    L.push(`# 地区策略：按正则自动筛选订阅节点（与 mihomo 版同一套正则）`);
+    for (const c of COUNTRIES) {
+        const img = c.icon ? `, img-url=${c.icon}` : ``;
+        // QX 用逗号分隔参数，正则里的 {2,} 改写成无逗号的等价形式 [A-Za-z][A-Za-z]+
+        const qxPattern = c.pattern.replace(/\[A-Za-z\]\{2,\}/g, "[A-Za-z][A-Za-z]+");
+        L.push(
+            `url-latency-benchmark=${c.group}, server-tag-regex=${qxPattern}, check-interval=300, tolerance=50${img}`
+        );
+    }
+    const countryGroups = COUNTRIES.map((c) => c.group).join(", ");
     for (const [name, , qxType] of GROUPS) {
         if (name === G.SELECT) {
-            L.push(`# ↓↓↓ 把你的节点名字填在这里，多个用逗号分隔 ↓↓↓`);
-            L.push(`static=${name}, direct, img-url=${ICONS[name]}`);
+            L.push(`static=${name}, direct, ${countryGroups}, img-url=${ICONS[name]}`);
             continue;
         }
         const members = GROUP_MEMBERS[name].map((m) =>
@@ -594,7 +672,8 @@ function buildQxConf() {
     L.push(`[filter_remote]`);
     for (const r of REMOTES) {
         if (!r.qx) continue;
-        L.push(`${r.qx}, tag=${r.tag}, force-policy=${r.policy}, enabled=true`);
+        const url = raw ? r.qx.replace(CDN, RAW) : r.qx;
+        L.push(`${url}, tag=${r.tag}, force-policy=${r.policy}, enabled=true`);
     }
     L.push(``);
     L.push(`[filter_local]`);
@@ -621,10 +700,12 @@ async function main() {
         console.log("== 离线模式：跳过外部源抓取 ==");
     }
     console.log("== 生成客户端配置 ==");
-    writeFileSync(join(CLIENTS_DIR, "loon.conf"), buildLoonConf());
-    writeFileSync(join(CLIENTS_DIR, "qx.conf"), buildQxConf());
-    console.log("  clients/loon.conf");
-    console.log("  clients/qx.conf");
+    writeFileSync(join(CLIENTS_DIR, "loon.conf"), buildLoonConf(false));
+    writeFileSync(join(CLIENTS_DIR, "qx.conf"), buildQxConf(false));
+    writeFileSync(join(CLIENTS_DIR, "loon-raw.conf"), buildLoonConf(true));
+    writeFileSync(join(CLIENTS_DIR, "qx-raw.conf"), buildQxConf(true));
+    console.log("  clients/loon.conf / qx.conf（jsDelivr 版）");
+    console.log("  clients/loon-raw.conf / qx-raw.conf（raw.githubusercontent 版）");
     console.log("完成。");
 }
 
