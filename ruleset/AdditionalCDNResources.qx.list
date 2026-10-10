@@ -1,0 +1,33 @@
+# 由 scripts/generate-clients.mjs 生成，请勿手改；改上游后重新跑脚本
+# 上游：ruleset/AdditionalCDNResources.list
+# 一些我个人收集的，符合「静态资源」代理组用途的域名
+host, production.cloudflare.docker.com
+host, dl.flathub.org
+host-suffix, data.microsoft.com
+host, assets.ppy.sh
+host, autoupdate.termius.com
+host, update.ayugram.one
+host, sh.nfs.pub
+host, download.calibre-ebook.com
+host, dl.google.com
+host, builds.dotnet.microsoft.com
+host, downloadmirror.intel.com
+host, pkgs.tailscale.com
+host, dl.tailscale.com
+
+# Brave
+host, updates-cdn.bravesoftware.com
+host, updates.bravesoftware.com
+host, dl.brave.com
+host, referrals.brave.com
+
+# Spotify
+host-suffix, scdn.co
+host-suffix, spotifycdn.com
+host-suffix, spotifycdn.net
+host-suffix, pscdn.co
+
+# Geekbench
+host, cdn.geekbench.com
+
+# REGEX

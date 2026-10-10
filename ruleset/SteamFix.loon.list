@@ -1,0 +1,5 @@
+# 由 scripts/generate-clients.mjs 生成，请勿手改；改上游后重新跑脚本
+# 上游：ruleset/SteamFix.list
+DOMAIN,steamcdn-a.akamaihd.net
+DOMAIN-SUFFIX,cm.steampowered.com
+DOMAIN-SUFFIX,steamserver.net

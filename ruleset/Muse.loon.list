@@ -1,9 +1,4 @@
-# Muse (Meta AI Agent) - Loon rule-set
-# 与 mihomo 版 ruleset/Muse.list 同源：AI 服务显式分流，不依赖 GeoSite 数据库版本
-# 用法（Loon）：[Remote Rule] 中添加
-#   https://cdn.jsdelivr.net/gh/kukeuk/override-rules@master/ruleset/Muse.loon.list, tag=Muse, enabled=true
-# 然后在 [Rule] 中添加：RULE-SET,Muse,AI服务（策略组名按你的实际名称改）
+# 由 scripts/generate-clients.mjs 生成，请勿手改；改上游后重新跑脚本
+# 上游：ruleset/Muse.list
+# Muse (Meta AI Agent) - explicit routing independent of GeoSite DB version
 DOMAIN-SUFFIX,muse.ai
-DOMAIN-SUFFIX,meta.ai
-DOMAIN-SUFFIX,metaaivm.com
-DOMAIN-SUFFIX,ai.meta.com

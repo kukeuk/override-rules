@@ -1,0 +1,40 @@
+# 由 scripts/generate-clients.mjs 生成，请勿手改；改上游后重新跑脚本
+# 上游：https://ruleset.skk.moe/Clash/non_ip/cdn.txt
+#########################################
+# Sukka's Ruleset - CDN Domains
+# Last Updated: 2026-10-08T10:17:52.439Z
+# Size: 85
+# License: AGPL 3.0
+# Homepage: https://ruleset.skk.moe
+# GitHub: https://github.com/SukkaW/Surge
+#
+# This file contains object storage and static assets CDN domains.
+#
+# $content-hash-v1$:Te3I2rxqrVemcH37iZZ1K1_wCy3mbYzhccHQyzHX8Hk$
+#########################################
+host, 7h15.ru1353t.1s.m4d3.by.5ukk4w.skk.moe
+host, cdn-msp.jmcomic.me
+host, cdn-msp.18comic.org
+host, cdn-msp.18comic.vip
+host, cdn-msp.jmcomic-zzz.one
+host-keyword, -files.gitbook.io
+host-keyword, vod-adaptive.akamaized.net
+host-keyword, web-assets.zendesk
+host-keyword, -res.cloudinary.com
+host-keyword, dsn.algolia.net
+host-keyword, -thumbs.pornhost.com
+host-keyword, -cdn.eporner.com
+host-keyword, cdn.adultempire.com
+host-keyword, -assets.dmm.co.jp
+host-keyword, static.trustpilot.com
+host-keyword, scripts.trustpilot.com
+host-keyword, images.trustpilot.com
+host-keyword, cdn.trustpilot.net
+host-keyword, assets.trustpilot.net
+host-keyword, images.trustpilot.net
+host-keyword, -assets.worldsex.com
+host-keyword, -thumbs.worldsex.com
+host-keyword, 99avcdn
+host-keyword, -images.disco-api.com
+host-keyword, static.grammarly.com
+################## EOF ##################

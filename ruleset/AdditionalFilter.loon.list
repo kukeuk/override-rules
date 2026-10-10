@@ -1,0 +1,5 @@
+# 由 scripts/generate-clients.mjs 生成，请勿手改；改上游后重新跑脚本
+# 上游：ruleset/AdditionalFilter.list
+# 屏蔽 TikTok Mod 烦人的更新提示
+DOMAIN,tigr1234566.github.io
+DOMAIN,rezvorck.github.io

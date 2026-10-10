@@ -1,0 +1,9 @@
+# 由 scripts/generate-clients.mjs 生成，请勿手改；改上游后重新跑脚本
+# 上游：ruleset/EHentai.list
+DOMAIN-SUFFIX,e-hentai.org
+DOMAIN-SUFFIX,ehgt.org
+DOMAIN-SUFFIX,ehwiki.org
+DOMAIN-SUFFIX,exhentai.org
+DOMAIN-SUFFIX,hath.network
+DOMAIN-SUFFIX,hentaiverse.org
+IP-CIDR,178.175.128.0/21,no-resolve
