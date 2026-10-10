@@ -28,6 +28,7 @@ export function buildRules(
         `RULE-SET,AdditionalCDNResources,${PROXY_GROUPS.STATIC_RESOURCES}`,
         `GEOSITE,category-cryptocurrency,${PROXY_GROUPS.CRYPTO}`,
         `GEOSITE,category-finance,${PROXY_GROUPS.FINANCE}`,
+        `RULE-SET,Muse,${PROXY_GROUPS.AI_SERVICE}`,
         `GEOSITE,category-ai-!cn,${PROXY_GROUPS.AI_SERVICE}`,
         `GEOSITE,bilibili,${PROXY_GROUPS.BILIBILI}`,
         `GEOSITE,youtube,${PROXY_GROUPS.YOUTUBE}`,
