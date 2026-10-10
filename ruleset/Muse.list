@@ -1,2 +1,5 @@
 # Muse (Meta AI Agent) - explicit routing independent of GeoSite DB version
 DOMAIN-SUFFIX,muse.ai
+DOMAIN-SUFFIX,meta.ai
+DOMAIN-SUFFIX,metaaivm.com
+DOMAIN-SUFFIX,ai.meta.com
