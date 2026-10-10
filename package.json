@@ -17,7 +17,8 @@
     "prepare": "husky",
     "preversion": "npm run lint && npm run typecheck",
     "version": "node scripts/changelog.mjs && git add CHANGELOG.md",
-    "postversion": "git push --follow-tags"
+    "postversion": "git push --follow-tags",
+    "test:quickjs": "node scripts/quickjs-smoke.mjs"
   },
   "dependencies": {
     "yaml": "^2.9.0"
@@ -35,7 +36,8 @@
     "tsx": "^4.23.13",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.70.0",
-    "typescript-native": "npm:typescript@^7.0.2"
+    "typescript-native": "npm:typescript@^7.0.2",
+    "quickjs-emscripten": "^0.32.0"
   },
   "lint-staged": {
     "*.{ts,js,json,md,yml,yaml}": [
