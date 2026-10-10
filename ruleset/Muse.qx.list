@@ -1,0 +1,9 @@
+# Muse (Meta AI Agent) - Quantumult X remote filter
+# 与 mihomo 版 ruleset/Muse.list 同源：AI 服务显式分流，不依赖 GeoSite 数据库版本
+# 用法（圈X）：[filter_remote] 中添加
+#   https://cdn.jsdelivr.net/gh/kukeuk/override-rules@master/ruleset/Muse.qx.list, tag=Muse, force-policy=AI服务, enabled=true
+# （策略名按你的实际策略改；update-interval=86400 可按需加上）
+host-suffix, muse.ai
+host-suffix, meta.ai
+host-suffix, metaaivm.com
+host-suffix, ai.meta.com
