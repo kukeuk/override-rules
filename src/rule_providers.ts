@@ -39,7 +39,7 @@ export const ruleProviders: Record<string, RuleProvider> = {
         behavior: "classical",
         format: "text",
         interval: 86400,
-        url: `${CDN_URL}/gh/89636047/override-rules@master/ruleset/TikTok.list`,
+        url: `${CDN_URL}/gh/kukeuk/override-rules@master/ruleset/TikTok.list`,
         path: "./ruleset/TikTok.list",
     },
     Muse: {
@@ -47,7 +47,7 @@ export const ruleProviders: Record<string, RuleProvider> = {
         behavior: "classical",
         format: "text",
         interval: 86400,
-        url: `${CDN_URL}/gh/89636047/override-rules@master/ruleset/Muse.list`,
+        url: `${CDN_URL}/gh/kukeuk/override-rules@master/ruleset/Muse.list`,
         path: "./ruleset/Muse.list",
     },
     EHentai: {
@@ -55,7 +55,7 @@ export const ruleProviders: Record<string, RuleProvider> = {
         behavior: "classical",
         format: "text",
         interval: 86400,
-        url: `${CDN_URL}/gh/89636047/override-rules@master/ruleset/EHentai.list`,
+        url: `${CDN_URL}/gh/kukeuk/override-rules@master/ruleset/EHentai.list`,
         path: "./ruleset/EHentai.list",
     },
     SteamFix: {
@@ -63,7 +63,7 @@ export const ruleProviders: Record<string, RuleProvider> = {
         behavior: "classical",
         format: "text",
         interval: 86400,
-        url: `${CDN_URL}/gh/89636047/override-rules@master/ruleset/SteamFix.list`,
+        url: `${CDN_URL}/gh/kukeuk/override-rules@master/ruleset/SteamFix.list`,
         path: "./ruleset/SteamFix.list",
     },
     GoogleFCM: {
@@ -71,7 +71,7 @@ export const ruleProviders: Record<string, RuleProvider> = {
         behavior: "classical",
         format: "text",
         interval: 86400,
-        url: `${CDN_URL}/gh/89636047/override-rules@master/ruleset/FirebaseCloudMessaging.list`,
+        url: `${CDN_URL}/gh/kukeuk/override-rules@master/ruleset/FirebaseCloudMessaging.list`,
         path: "./ruleset/FirebaseCloudMessaging.list",
     },
     AdditionalFilter: {
@@ -79,7 +79,7 @@ export const ruleProviders: Record<string, RuleProvider> = {
         behavior: "classical",
         format: "text",
         interval: 86400,
-        url: `${CDN_URL}/gh/89636047/override-rules@master/ruleset/AdditionalFilter.list`,
+        url: `${CDN_URL}/gh/kukeuk/override-rules@master/ruleset/AdditionalFilter.list`,
         path: "./ruleset/AdditionalFilter.list",
     },
     AdditionalCDNResources: {
@@ -87,7 +87,7 @@ export const ruleProviders: Record<string, RuleProvider> = {
         behavior: "classical",
         format: "text",
         interval: 86400,
-        url: `${CDN_URL}/gh/89636047/override-rules@master/ruleset/AdditionalCDNResources.list`,
+        url: `${CDN_URL}/gh/kukeuk/override-rules@master/ruleset/AdditionalCDNResources.list`,
         path: "./ruleset/AdditionalCDNResources.list",
     },
     Weibo: {
@@ -95,7 +95,7 @@ export const ruleProviders: Record<string, RuleProvider> = {
         behavior: "classical",
         format: "text",
         interval: 86400,
-        url: `${CDN_URL}/gh/89636047/override-rules@master/ruleset/Weibo.list`,
+        url: `${CDN_URL}/gh/kukeuk/override-rules@master/ruleset/Weibo.list`,
         path: "./ruleset/Weibo.list",
     },
     GFWList: {
