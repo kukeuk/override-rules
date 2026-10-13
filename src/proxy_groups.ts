@@ -104,7 +104,10 @@ export function buildProxyGroups({
             ? {
                   name: PROXY_GROUPS.LANDING,
                   icon: `${CDN_URL}/gh/Koolson/Qure@master/IconSet/Color/Airport.png`,
-                  type: "select",
+                  type: "url-test",
+                  url: SPEEDTEST_URL,
+                  interval: 300,
+                  tolerance: 50,
                   proxies: landingNodes.map((node) => node.name).filter(isNotNull),
               }
             : null,
