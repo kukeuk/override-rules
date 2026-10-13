@@ -29,6 +29,7 @@ export default [
                 process: "readonly",
                 console: "readonly",
                 Buffer: "readonly",
+                fetch: "readonly",
                 // SubStore / Clash 脚本环境全局变量
                 $arguments: "readonly",
                 $network: "readonly",

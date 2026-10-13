@@ -34,7 +34,7 @@ function parseCountries() {
     const start = src.indexOf("export const countriesMeta");
     const end = src.indexOf("\n};", start);
     const block = src.slice(start, end);
-    const parts = block.split(/^    (\S+): \{$/m);
+    const parts = block.split(/^ {4}(\S+): \{$/m);
     const list = [];
     for (let i = 1; i + 1 < parts.length; i += 2) {
         const name = parts[i];
@@ -481,9 +481,6 @@ const PROXY_D = [G.DIRECT, G.SELECT, G.MANUAL];
 function loonGroup(name, members) {
     return `${name} = select, ${members.join(", ")}, img-url=${ICONS[name]}`;
 }
-function qxGroup(name, members) {
-    return `static=${name}, ${members.join(", ")}, img-url=${ICONS[name]}`;
-}
 const GROUPS = [
     [G.SELECT, "select", "static"],
     [G.MANUAL, "select", "static"],
@@ -559,7 +556,6 @@ function buildLoonConf(raw = false) {
     L.push(`# 2) 到下面的 [Remote Proxy] 把你的节点订阅链接填进去（去掉行首的 #）；`);
     L.push(`# 3) 地区组（美国节点/新加坡节点…）会自动按正则筛选订阅里的节点，无需手动填；`);
     L.push(`# 4) 其它服务组已自动跟随「${G.SELECT}」`);
-    const base = raw ? RAW : CDN;
     L.push(``);
     L.push(`[General]`);
     L.push(`dns-server = system`);
