@@ -3,3 +3,10 @@ DOMAIN-SUFFIX,muse.ai
 DOMAIN-SUFFIX,meta.ai
 DOMAIN-SUFFIX,metaaivm.com
 DOMAIN-SUFFIX,ai.meta.com
+DOMAIN,graph.facebook.com
+DOMAIN,b-www.facebook.com
+IP-CIDR,31.13.0.0/16
+IP-CIDR,157.240.0.0/16
+IP-CIDR,185.60.216.0/22
+IP-CIDR,69.171.224.0/19
+IP-CIDR,173.252.64.0/18
