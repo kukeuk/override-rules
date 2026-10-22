@@ -115,7 +115,7 @@ export interface DnsConfig {
     "fake-ip-filter-mode"?: "blacklist" | "whitelist" | "rule";
     "default-nameserver"?: string[];
     nameserver: string[];
-    fallback: string[];
+    fallback?: string[];
     "proxy-server-nameserver"?: string[];
     "direct-nameserver"?: string[];
     "nameserver-policy"?: Record<string, DnsPolicyValue>;

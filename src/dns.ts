@@ -167,6 +167,11 @@ function mergeDnsPolicies(
 
 /** 仅合并允许继承的上游 DNS 字段，同时保留脚本控制字段的优先级。 */
 function inheritDnsFields(generated: DnsConfig, upstream?: DnsConfig): DnsConfig {
+    // 按教程要求完全禁用 DNS fallback：最终配置不输出 fallback / fallback-filter，
+    // 解析交由远端处理；上游若携带这两个字段也不继承。
+    delete generated.fallback;
+    delete generated["fallback-filter"];
+
     if (!isRecord(upstream)) return generated;
 
     const merged = { ...generated };
@@ -197,13 +202,6 @@ function buildDnsConfig({ mode, ipv6Enabled, fakeIpFilter }: BuildDnsConfigInput
         "prefer-h3": true,
         "enhanced-mode": mode,
         nameserver: ["system", "223.5.5.5", "119.29.29.29", "180.184.1.1"],
-        fallback: [
-            "quic://dns0.eu",
-            "https://dns.cloudflare.com/dns-query",
-            "https://dns.sb/dns-query",
-            "tcp://208.67.222.222",
-            "tcp://8.26.56.2",
-        ],
     };
 
     if (fakeIpFilter) {
